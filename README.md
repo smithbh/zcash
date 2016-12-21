@@ -1,13 +1,12 @@
-# dockery
-Checks if an ip is a tor exit node.
+# zcash 
 
 ####ABOUT
-About: Helper functions for working with docker on OSX.
-To use, simply run dockery <command> from the root directory of a project using docker.
+About: Pre-compiled zcash binaries for OSX. 
+To configure, run zcash configure.
 
 ####USAGE
 From the command-line, type
 
-dockery <command>
+zcash <command>
 
 and press enter.

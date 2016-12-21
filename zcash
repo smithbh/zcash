@@ -23,8 +23,8 @@ CMD="${1}"
 CURDIR="${PWD//\ /\\ }/"
 
 ##################################
-ZC_PATH=$(brew --prefix zcash);
-ZC_CONF_PATH="${HOME}/.zcash2/";
+ZC_PATH=$(brew --prefix zcash)/bin;
+ZC_CONF_PATH="${HOME}/.zcash/";
 NODE_DEFAULT="zec-us.suprnova.cc";
 RPCPORT_DEFAULT=2142
 
@@ -66,12 +66,12 @@ function configure {
   echo "equihashsolver=nicehash" >> ${ZC_CONF_PATH}zcash.conf;
   echo "showmetrics=1" >> ${ZC_CONF_PATH}zcash.conf;
 
-  bash ${ZC_PATH}fetch-params.sh;
+  bash ${ZC_PATH}/fetch-params.sh;
 }
 
 function run {
   zcashd;
-  bash ${ZC_PATH}spawn-cli.osascript;
+  bash ${ZC_PATH}/spawn-cli.osascript;
 }
 
 ${CMD};

@@ -1,0 +1,7 @@
+#!/bin/sh 
+osascript <<END 
+tell application "Terminal"
+    do script "zcash-cli z_gettotalbalance && zcash-cli getwalletinfo;"
+end tell
+END
+

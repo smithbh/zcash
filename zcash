@@ -1,0 +1,78 @@
+#!/bin/bash
+
+if [ -z "$1" ] || [ "$1" == "-h" ];
+	then
+		echo "";
+		echo "                            ZCASH";
+		echo "About: Pre-compiled zcash binaries for OSX.";
+		echo "To configure, run zcash configure.";
+		echo "";
+		echo "zcash  <command>";
+    echo -e "";
+		echo -e "Commands:\n";
+    echo -e "    mysql-port\tCopy the mysql port to clipboard and open Sequel Pro if installed.";
+    echo -e "    redis-clear\tKill, create, then start fresh Redis containers.";
+    echo -e "    swag\tStart swaggerui containers and open page in Chrome.";
+    echo -e "    ssh\t\tSelect from a list of active containers to \"ssh\" into.";
+		exit 1
+fi
+
+args=$@
+args=$(echo $@ | sed 's/\-\-verbose//g; s/\-v//g')
+CMD="${1}"
+CURDIR="${PWD//\ /\\ }/"
+
+##################################
+# ZC_PATH=$(brew --prefix zcash);
+ZC_PATH=/usr/local/custom/zcash/;
+ZC_CONF_PATH="${HOME}/.zcash2/";
+NODE_DEFAULT="zec-us.suprnova.cc";
+RPCPORT_DEFAULT=2142
+
+
+function configure {
+  read -e -p "Enter node address (press enter for default): " NODE;
+  read -e -p "Enter RPC Port (press enter for default): " RPCPORT;
+  read -e -p "Enter RPC User (<account_name>.<worker_name>): " RPCUSER;
+  read -e -p "Enter RPC Password (worker password): " RPCPASS;
+
+  if [ -z "$NODE" ]; then
+    NODE=${NODE_DEFAULT};
+  fi
+
+  if [ -z "$RPCPORT" ]; then
+    RPCPORT=${RPCPORT_DEFAULT};
+  fi
+
+  if [ -z "$RPCUSER" ] || [ -z "$RPCPORT" ]; then
+    open -a /Applications/Safari.app "https://zec.suprnova.cc/index.php?page=login";
+  fi
+
+  if [ ! -d ${ZC_CONF_PATH} ]; then
+    mkdir ${ZC_CONF_PATH};
+  fi
+
+  if [ ! -f "${ZC_CONF_PATH}/zcash.conf" ]; then
+    touch "${ZC_CONF_PATH}/zcash.conf";
+  fi
+
+  echo "addnode=${NODE}" >> ${ZC_CONF_PATH}zcash.conf;
+  echo "rpcport=${RPCPORT}" >> ${ZC_CONF_PATH}zcash.conf;
+  echo "rpcuser=${RPCUSER}" >> ${ZC_CONF_PATH}zcash.conf;
+  echo "rpcpassword=${RPCPASS}" >> ${ZC_CONF_PATH}zcash.conf;
+
+  echo "gen=1" >> ${ZC_CONF_PATH}zcash.conf;
+  echo "genproclimit=8" >> ${ZC_CONF_PATH}zcash.conf;
+
+  echo "equihashsolver=nicehash" >> ${ZC_CONF_PATH}zcash.conf;
+  echo "showmetrics=1" >> ${ZC_CONF_PATH}zcash.conf;
+
+  bash ${ZC_PATH}fetch-params.sh;
+}
+
+function run {
+  zcashd;
+  bash ${ZC_PATH}spawn-cli.osascript;
+}
+
+${CMD};

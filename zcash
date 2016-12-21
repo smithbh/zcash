@@ -33,7 +33,7 @@ function configure {
   read -e -p "Enter node address (press enter for default): " NODE;
   read -e -p "Enter RPC Port (press enter for default): " RPCPORT;
   read -e -p "Enter RPC User (<account_name>.<worker_name>): " RPCUSER;
-  read -e -p "Enter RPC Password (worker password): " RPCPASS;
+  read -s -e -p "Enter RPC Password (worker password): " RPCPASS;
 
   if [ -z "$NODE" ]; then
     NODE=${NODE_DEFAULT};

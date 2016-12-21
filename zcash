@@ -23,8 +23,7 @@ CMD="${1}"
 CURDIR="${PWD//\ /\\ }/"
 
 ##################################
-# ZC_PATH=$(brew --prefix zcash);
-ZC_PATH=/usr/local/custom/zcash/;
+ZC_PATH=$(brew --prefix zcash);
 ZC_CONF_PATH="${HOME}/.zcash2/";
 NODE_DEFAULT="zec-us.suprnova.cc";
 RPCPORT_DEFAULT=2142
